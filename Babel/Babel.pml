@@ -6,6 +6,7 @@
     </BehaviorDescriptions>
     <Dialogs>
         <Dialog name="Lexicon" src="scripts/butane/dialog/Lexicon/Lexicon.dlg" />
+        <Dialog name="Translate" src="dialog/Translate/Translate.dlg" />
     </Dialogs>
     <Resources>
         <File name="icon" src="icon.png" />
@@ -22,6 +23,7 @@
     </Resources>
     <Topics>
         <Topic name="Lexicon_enu" src="scripts/butane/dialog/Lexicon/Lexicon_enu.top" topicName="Lexicon" language="en_US" />
+        <Topic name="Translate_enu" src="dialog/Translate/Translate_enu.top" topicName="Translate" language="en_US" />
     </Topics>
     <IgnoredPaths>
         <Path src="scripts/butane/tests/TestBehavior/dialog/TestTopic/TestTopic.dlg" />

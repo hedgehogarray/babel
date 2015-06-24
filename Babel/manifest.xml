@@ -13,6 +13,12 @@
   <behaviorContent path=".">
    <userRequestable/>
    <nature>interactive</nature>
+   <triggerSentences>
+    <sentence lang="en_US">translate</sentence>
+    <sentence lang="en_US">translator</sentence>
+   </triggerSentences>
+   <loadingResponses/>
+   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
