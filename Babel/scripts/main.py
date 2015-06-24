@@ -1,17 +1,6 @@
 """
-A sample showing how to make a standalone Python script as an app.
-
-This doesn't venture into fancy multithreading yet.
-
-Copyright Aldebaran Robotics
-ekroeger@aldebaran.com
+Translator app.
 """
-
-__version__ = "0.0.5"
-
-__copyright__ = "Copyright 2015, Aldebaran Robotics"
-__author__ = 'ekroeger'
-__email__ = 'ekroeger@aldebaran.com'
 
 import sys
 import signal
@@ -19,6 +8,8 @@ import signal
 import qi
 
 from libs import qiscript
+from libs.mstranslator import Translator
+
 
 class App(object):
     "A sample standalone app, that demonstrates simple Python usage"
@@ -27,47 +18,48 @@ class App(object):
         self.qiapplication.start()
         self.session = self.qiapplication.session
 
-        #services
+        # services
         self.memory = qiscript.MemoryHelper(self.session)
         self.services = qiscript.ServiceCache(self.session)
         signal.signal(signal.SIGTERM, self.exit)
+
+        self.phrase = None
+        self.language = None
+        self.translated = None
+        self.translator = Translator(
+            '',
+            'robot-translator')
 
     def exit(self):
         self.memory.clear()
         self.qiapplication.stop()
 
-    def on_touched(self, value):
-        if value:
-            self.memory.disconnect("FrontTactilTouched")
-            print "Forehead touched!"
-            self.services.ALTextToSpeech.say("Yay!")
-            self.exit()
-
     #
     # Run functions
     #
-    def run_ask_touch(self):
+    def ask_translation(self):
         "Ask to be touched, waits, and exits."
-        # Two ways of waiting for events
-        # 1) block until it's called
-        self.services.ALTextToSpeech.say("Touch my forehead")
-        self.memory.wait_for("FrontTactilTouched", 1.0)
+        self.services.ALTextToSpeech.say("Give me something to translate")
+        self.memory.connect("Babel/Phrase", self.set_phrase)
+        self.memory.connect("Babel/Language", self.set_language)
+        self.memory.connect("Babel/Exit", self.on_exit)
 
-        # 2) explicitly connect a callback
-        self.memory.connect("FrontTactilTouched", self.on_touched)
-        self.services.ALTextToSpeech.say("okay, touch it again")
-        # note that we connect the callback before the ALTextToSpeech,
-        # so touch events are received while the robot is speaking (not possible
-        # with the wait_for version above).
+    def set_phrase(self, value):
+        self.phrase = value
+        if self.language is not None:
+            self.say_translation()
 
-        # now run until someone calls .exit()
-        self.qiapplication.run()
+    def set_language(self, value):
+        self.language = value
+        if self.phrase is not None:
+            self.say_translation()
 
-    def run_simple(self):
-        "Just raise an ALmemory, say 'um', and exit."
-        self.memory.set("PythonApp/Test", True)
-        self.services.ALTextToSpeech.say("um")
-        self.exit()
+    def on_exit(self, value):
+        if value:
+            self.exit()
+
+    def say_translation(self):
+        self.services.ALTextToSpeech.say("No idea")
 
 
 def run(qi_url=None):
@@ -78,8 +70,7 @@ def run(qi_url=None):
 
     app = App()
     print "Successfully running on robot."
-    app.run_ask_touch()
-    #app.run_simple()
+    app.ask_translation()
 
     print "App Finished, exiting."
     app.services.ALTextToSpeech.say("Cleaning up")

@@ -1,11 +1,10 @@
 topic: ~Translate()
 language: enu
 
-# Defining extra concepts out of words or group of words
-#concept:(hello) [hello hi hey "good morning" greetings]
+concept:(how_to_say) ["how [do can] [I you we]"] say" "what is"]
+concept:(language) [english french spanish german japanese chinese]
+concept:(exit) ["that's enough" "[quit stop] the app" "go away" "leave me alone"]
 
-# Catching inputs and triggering outputs
-#u:(e:onStart) $onStopped=1
+u:(~how_to_say _* in _~language) $Babel/Phrase=$1 $Babel/Language=$2 hum, let me think
 
-# Replying to speech
-#u:(~hello) ~hello
+u:(~exit) OK, enough translation for now $Babel/Exit=1
