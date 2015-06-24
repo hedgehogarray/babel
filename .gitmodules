@@ -1,0 +1,3 @@
+[submodule "Babel/scripts/butane"]
+	path = Babel/scripts/butane
+	url = git@gitlab.aldebaran.lan:boston-studio/butane.git
