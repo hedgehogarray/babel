@@ -9,6 +9,7 @@ import qi
 
 from libs import qiscript
 from libs.mstranslator import Translator
+from libs.mstranslator import TranslateApiException
 
 
 class App(object):
@@ -26,9 +27,18 @@ class App(object):
         self.phrase = None
         self.language = None
         self.translated = None
+
+        self.languages = {'English': 'en',
+                          'French': 'fr',
+                          'Spanish': 'es',
+                          'German': 'de',
+                          'Japanese': 'ja'}
+
         self.translator = Translator(
-            'INSERT_YOUR_KEY',
-            'robot-translator')
+            'robot-translator',
+            'KEy_HERE')
+        translation = self.translator.translate('hello', 'fr')
+        print translation
 
     def exit(self):
         self.memory.clear()
@@ -47,11 +57,13 @@ class App(object):
 
     def set_phrase(self, value):
         self.phrase = value
+        print self.phrase
         if self.language is not None:
             self.say_translation()
 
     def set_language(self, value):
-        self.language = value
+        self.language = self.languages[value.title()]
+        print self.language
         if self.phrase is not None:
             self.say_translation()
 
@@ -60,8 +72,15 @@ class App(object):
             self.exit()
 
     def say_translation(self):
-        self.services.ALTextToSpeech.say(
-            self.translator.translate("Hello", "fr"))
+        try:
+            translation = self.translator.translate(self.phrase, self.language)
+            print translation
+        except TranslateApiException as err:
+            translation = "I'm not sure"
+            print err
+        self.services.ALTextToSpeech.say(translation)
+        self.phrase = None
+        self.language = None
 
 
 def run(qi_url=None):
