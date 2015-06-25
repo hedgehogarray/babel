@@ -1,7 +1,7 @@
 topic: ~Translate()
 language: enu
 
-concept:(how_to_say) ["how [do can] [I you we]"] say" "what is"]
+concept:(how_to_say) ["how [do can] [I you we] say" "what is"]
 concept:(language) [english french spanish german japanese chinese]
 concept:(exit) ["that's enough" "[quit stop] the app" "go away" "leave me alone"]
 

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<package version="0.0.1" uuid="babel">
+<package uuid="babel" version="0.0.1">
  <names>
   <name lang="en_US">Babel</name>
  </names>
@@ -17,8 +17,6 @@
     <sentence lang="en_US">translate</sentence>
     <sentence lang="en_US">translator</sentence>
    </triggerSentences>
-   <loadingResponses/>
-   <autonomous/>
    <permissions/>
   </behaviorContent>
  </contents>
@@ -27,6 +25,6 @@
   <robotRequirement/>
  </requirements>
  <services>
-  <service execStart="/usr/bin/python2 scripts/main.py --qi-url [URL]" name="main" autorun="false"/>
+  <service autorun="false" execStart="/usr/bin/python2 scripts/main.py --qi-url [URL]" name="main"/>
  </services>
 </package>

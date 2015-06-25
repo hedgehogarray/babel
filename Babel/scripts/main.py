@@ -27,7 +27,7 @@ class App(object):
         self.language = None
         self.translated = None
         self.translator = Translator(
-            '',
+            'INSERT_YOUR_KEY',
             'robot-translator')
 
     def exit(self):
@@ -43,6 +43,7 @@ class App(object):
         self.memory.connect("Babel/Phrase", self.set_phrase)
         self.memory.connect("Babel/Language", self.set_language)
         self.memory.connect("Babel/Exit", self.on_exit)
+        self.qiapplication.run()
 
     def set_phrase(self, value):
         self.phrase = value
@@ -59,7 +60,8 @@ class App(object):
             self.exit()
 
     def say_translation(self):
-        self.services.ALTextToSpeech.say("No idea")
+        self.services.ALTextToSpeech.say(
+            self.translator.translate("Hello", "fr"))
 
 
 def run(qi_url=None):
